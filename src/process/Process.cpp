@@ -12,7 +12,7 @@
 
 namespace std {
 
-Process::Process(buffer *b) {
+Process::Process(source *b) {
 	buf = b;
 
 	// sublength, i, and j

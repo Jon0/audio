@@ -165,13 +165,25 @@ int Playback::play(long length, short *buffer) {
 	}
 
 	snd_pcm_prepare (_soundDevice);
-	cout << "done" << endl;
+	// cout << "done" << endl;
 	lock--;
 	return 0;
 }
 
-int Playback::play(buffer *b) {
+int Playback::playnext(source *b) {
 	return play(b->getLength(), b->getData());
+}
+
+int Playback::playall(source *b) {
+
+	while (1) {
+		short * next = (short *)b->nextBlock();
+		if (next) {
+			play(b->getBlockLength(), next);
+		}
+	}
+
+	return 0;
 }
 
 Playback::~Playback() {

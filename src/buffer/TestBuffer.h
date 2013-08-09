@@ -8,21 +8,24 @@
 #ifndef TESTBUFFER_H_
 #define TESTBUFFER_H_
 
-#include "../buffer.h"
+#include "BaseBuffer.h"
 
 namespace std {
 
-class TestBuffer: public buffer {
-protected:
-	long length;
-	short *array;
+class TestBuffer: public BaseBuffer {
 public:
 	TestBuffer();
-	TestBuffer(int);
-	void fillNext(int, int);
+	~TestBuffer();
+
+	virtual int getFormat();
 	virtual long getLength();
 	virtual short *getData();
-	virtual ~TestBuffer();
+
+protected:
+	float time;
+	virtual void *makeBlock();
+
+
 };
 
 } /* namespace std */

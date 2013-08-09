@@ -9,14 +9,14 @@
 #define PROCESS_H_
 
 #include "Vector.h"
-#include "../buffer.h"
+#include "../source.h"
 
 namespace std {
 
 class Process {
-	buffer *buf;
+	source *buf;
 public:
-	Process(buffer *b);
+	Process(source *b);
 	Vector *read(int, int);
 	virtual ~Process();
 };

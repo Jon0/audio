@@ -9,13 +9,13 @@
 #define FFT_H_
 
 #include <complex>
-#include "../buffer.h"
+#include "../source.h"
 
 namespace std {
 
 class fft {
 public:
-	fft(buffer *);
+	fft(source *);
 	complex<double> *DFT_naive_1(double *, int);
 	complex<double> *DFT_naive_2(complex<double> *, int);
 	virtual ~fft();

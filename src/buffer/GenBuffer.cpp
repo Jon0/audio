@@ -15,7 +15,7 @@ namespace std {
 GenBuffer::GenBuffer() {
 	srand( time( NULL ) );
 
-	int blocklen = 1024*32; //1024*32;
+	int blocklen = 124; //1024*32;
 	int blocks = 1024; //128;
 
 	length = blocks*blocklen;
@@ -71,9 +71,6 @@ GenBuffer::GenBuffer() {
 					offa += inc[freq];
 				}
 
-
-
-
 			}
 
 			//buffer[blocklen * b + v] += sin( offa ) * 1000.0;
@@ -92,6 +89,18 @@ GenBuffer::GenBuffer() {
 
 
 
+}
+
+int GenBuffer::getFormat() {
+	return 0;
+}
+
+long GenBuffer::getBlockLength() {
+	return 0;
+}
+
+void *GenBuffer::nextBlock() {
+	return 0;
 }
 
 long GenBuffer::getLength() {

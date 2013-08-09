@@ -9,18 +9,18 @@
 #define SCOPE_H_
 
 #include "Display.h"
-#include "buffer.h"
+#include "source.h"
 
 namespace std {
 
 class Scope: public Display {
-	buffer *b;
+	source *b;
 	float view_scale;
 	long startTime;
 	int width, height;
 
 public:
-	Scope(buffer *, int, int);
+	Scope(source *, int, int);
 	virtual void init();
 	virtual void start();
 	virtual void draw();

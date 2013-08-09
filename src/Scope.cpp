@@ -12,7 +12,7 @@
 
 namespace std {
 
-Scope::Scope(buffer *buffer, int w, int h) {
+Scope::Scope(source *buffer, int w, int h) {
 	b = buffer;
 	startTime = -1;
 	view_scale = 1.0;

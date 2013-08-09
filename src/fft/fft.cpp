@@ -12,7 +12,7 @@
 
 namespace std {
 
-fft::fft(buffer *b) {
+fft::fft(source *b) {
 	int length = 1024;
 	double *dat = new double[1024];
 	for (int i = 0; i < length; ++i) {
@@ -58,7 +58,8 @@ complex<double> *fft::DFT_naive_2(complex<double> *in, int N) {
 
 
     for(int k = 0; k<N; k++) {
-        X[k].real() = X[k].imag() = 0.0;
+        X[k].real(0.0);
+        X[k].imag(0.0);
         for(int n=0; n<N; n++) {
             X[k] = X[k] + in[n] * Nth_root[(n*k) % N];
         }

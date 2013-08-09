@@ -8,18 +8,21 @@
 #ifndef GENBUFFER_H_
 #define GENBUFFER_H_
 
-#include "../buffer.h"
+#include "../source.h"
 
 namespace std {
 
-class GenBuffer: public buffer  {
+class GenBuffer: public source  {
 protected:
 	long length;
 	short *buffer;
 public:
 	GenBuffer();
+	virtual int getFormat();
 	virtual long getLength();
+	virtual long getBlockLength();
 	virtual short *getData();
+	virtual void *nextBlock();
 	virtual ~GenBuffer();
 };
 

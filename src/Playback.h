@@ -9,7 +9,7 @@
 #define PLAYBACK_H_
 
 #include <alsa/asoundlib.h>
-#include "buffer.h"
+#include "source.h"
 
 namespace std {
 
@@ -21,7 +21,8 @@ class Playback {
 public:
 	Playback();
 	int play(long length, short *buffer);
-	int play(buffer *);
+	int playnext(source *);
+	int playall(source *);
 	virtual ~Playback();
 };
 

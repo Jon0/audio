@@ -21,12 +21,13 @@
 #include "buffer/TestBuffer.h"
 #include "buffer/WavBuffer.h"
 #include "buffer/GenBuffer.h"
+#include "buffer/TestBuffer.h"
 #include "fft/fft.h"
 
 using namespace std;
 
 GLuint g_mainWnd;
-buffer *b = new GenBuffer(); //new WavBuffer("shost2.wav");
+source *b = new TestBuffer(); //new GenBuffer(); //new WavBuffer("shost2.wav");
 Display *disp = new Scope(b, wwidth, wheight);
 Playback *player = new Playback();
 fft *ft = new fft(b);
@@ -64,7 +65,8 @@ int main(int argc, char** argv) {
 }
 
 static void *begin_playback(void *arg) {
-	player->play(b);
+	//player->playnext(b);
+	player->playall(b);
 	return 0;
 }
 

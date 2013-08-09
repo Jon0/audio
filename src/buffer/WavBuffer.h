@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "../buffer.h"
+#include "../source.h"
 
 namespace std {
 
@@ -31,7 +31,7 @@ struct FMT {
 	short bitsPerSample;
 };
 
-class WavBuffer: public buffer {
+class WavBuffer: public source {
 protected:
 	RIFF header;
 	FMT format;
