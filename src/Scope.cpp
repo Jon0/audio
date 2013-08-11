@@ -64,6 +64,10 @@ void Scope::draw() {
 
 	int g_numPoints = b->getBlockLength();
 	short *g_values = (short *)b->currentBlock();
+	if (g_values != g_values_pre) {
+		start();
+	}
+
 	if (g_values) {
 
 		glColor3f(0.95f, 0.207, 0.031f);
@@ -79,6 +83,8 @@ void Scope::draw() {
 			glEnd();
 		}
 	}
+
+	g_values_pre = g_values;
 }
 
 Scope::~Scope() {

@@ -15,6 +15,7 @@ namespace std {
 
 class Scope: public Display {
 	source *b;
+	short *g_values_pre;
 	float view_scale;
 	long startTime;
 	int width, height;
