@@ -54,7 +54,7 @@ GenBuffer::GenBuffer() {
 	float ratio = pow(2, 1.0/12.0);
 	float inc[12] = {};
 	for (int freq = 0; freq < 12; ++freq) {
-		inc[freq] = 40.0 / (440.0 * pow(ratio, freq) ); //2
+		inc[freq] = 50.0 / (440.0 * pow(ratio, freq) ); //2
 	}
 	float off[12] = {};
 	float offa = 0;
@@ -74,7 +74,7 @@ GenBuffer::GenBuffer() {
 
 			}
 
-			//buffer[blocklen * b + v] += sin( offa ) * 1000.0;
+			buffer[blocklen * b + v] += sin( offa ) * 1000.0;
 
 		}
 
@@ -97,11 +97,11 @@ int GenBuffer::getFormat() {
 }
 
 long GenBuffer::getBlockLength() {
-	return 0;
+	return length;
 }
 
 void *GenBuffer::nextBlock() {
-	return 0;
+	return buffer;
 }
 
 void *GenBuffer::currentBlock() {

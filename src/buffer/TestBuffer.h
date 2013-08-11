@@ -22,7 +22,7 @@ public:
 	virtual short *getData();
 
 protected:
-	float time;
+	float time, f;
 	virtual void *makeBlock();
 
 

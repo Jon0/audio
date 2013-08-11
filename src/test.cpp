@@ -27,7 +27,7 @@
 using namespace std;
 
 GLuint g_mainWnd;
-source *b = new TestBuffer(); //new WavBuffer("shost2.wav"); //new GenBuffer();
+source *b = new GenBuffer(); // new TestBuffer(); //new WavBuffer("shost2.wav"); //
 Display *disp = new Scope(b, wwidth, wheight);
 Playback *player = new Playback();
 fft *ft = new fft(b);
