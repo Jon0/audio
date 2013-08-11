@@ -44,6 +44,11 @@ public:
 	void ReadFMT();
 	virtual long getLength();
 	virtual short *getData();
+
+	virtual int getFormat();
+	virtual long getBlockLength();
+	virtual void *nextBlock();
+	virtual void *currentBlock();
 	virtual ~WavBuffer();
 };
 

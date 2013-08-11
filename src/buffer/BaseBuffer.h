@@ -9,6 +9,7 @@
 #define BASEBUFFER_H_
 
 #include <vector>
+#include <mutex>
 #include <atomic>
 #include <thread>
 #include "../source.h"
@@ -27,15 +28,23 @@ public:
 	void stop();
 	virtual long getBlockLength();
 	virtual void *nextBlock();
+	virtual void *currentBlock();
 
 protected:
 	int blocksize;
     atomic<bool> m_stop;
+    atomic<int> m_size;
     virtual void *makeBlock() = 0;
 
 private:
     thread m_thread;
+
+    // array of blocks
+    mutex data_mutex;
 	vector<void *> data;
+
+	void *current; 	// the last block used
+
     void makeBlocks();
 };
 

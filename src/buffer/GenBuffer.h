@@ -23,6 +23,7 @@ public:
 	virtual long getBlockLength();
 	virtual short *getData();
 	virtual void *nextBlock();
+	virtual void *currentBlock();
 	virtual ~GenBuffer();
 };
 

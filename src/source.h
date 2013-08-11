@@ -11,12 +11,17 @@ namespace std {
 
 class source {
 public:
-	virtual int getFormat() = 0;
-	virtual long getLength() = 0;
-	virtual long getBlockLength() = 0;
-	virtual short *getData() = 0;
-	virtual void *nextBlock() = 0;
 	virtual ~source() {};
+
+	virtual int getFormat() = 0;
+	virtual long getBlockLength() = 0;
+	virtual void *nextBlock() = 0;
+	virtual void *currentBlock() = 0;
+
+
+	/* no longer used */
+	virtual long getLength() = 0;
+	virtual short *getData() = 0;
 };
 
 } /* namespace std */

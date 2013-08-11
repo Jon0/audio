@@ -57,6 +57,22 @@ short *WavBuffer::getData() {
 	return array;
 }
 
+int WavBuffer::getFormat() {
+	return 0;
+}
+
+long WavBuffer::getBlockLength() {
+	return length;
+}
+
+void *WavBuffer::nextBlock() {
+	return array;
+}
+
+void *WavBuffer::currentBlock() {
+	return array;
+}
+
 WavBuffer::~WavBuffer() {
 	// TODO Auto-generated destructor stub
 }

@@ -59,20 +59,25 @@ void Scope::draw() {
 	glLoadIdentity();
 	gluLookAt((float)m/60, 0.0, 100.0*view_scale, (float)m/60, 0.0, 0.0, 0.0, 1.0, 0.0);
 
-	long g_numPoints = b->getLength();
-	short *g_values = b->getData();
+	//long g_numPoints = b->getLength();
+	//short *g_values = b->getData();
 
-	glColor3f(0.95f, 0.207, 0.031f);
-	for (int i = m; i < m+4000 && i < g_numPoints; ++i) {
+	int g_numPoints = b->getBlockLength();
+	short *g_values = (short *)b->currentBlock();
+	if (g_values) {
+
 		glColor3f(0.95f, 0.207, 0.031f);
-		glBegin(GL_POINTS);
-		glVertex3f((float)i/60-24*view_scale, (float)g_values[i]/5000, 0);
-		glEnd();
-		glColor3f(0.15f, 0.203, 0.081f);
-		glBegin(GL_LINES);
-		glVertex3f((float)i/60-24*view_scale, (float)g_values[i]/5000, 0);
-		glVertex3f((float)(i+1)/60-24*view_scale, (float)g_values[i+1]/5000, 0);
-		glEnd();
+		for (int i = ((int)m % g_numPoints); i < ((int)m % g_numPoints) + 4000 && i << g_numPoints; ++i) {
+			glColor3f(0.95f, 0.207, 0.031f);
+			glBegin(GL_POINTS);
+			glVertex3f((float) i / 60 - 24 * view_scale, (float) g_values[i] / 5000, 0);
+			glEnd();
+			glColor3f(0.15f, 0.203, 0.081f);
+			glBegin(GL_LINES);
+			glVertex3f((float) i / 60 - 24 * view_scale, (float) g_values[i] / 5000, 0);
+			glVertex3f((float) (i + 1) / 60 - 24 * view_scale, (float) g_values[i + 1] / 5000, 0);
+			glEnd();
+		}
 	}
 }
 

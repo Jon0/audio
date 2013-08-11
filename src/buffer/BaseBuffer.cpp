@@ -6,14 +6,17 @@
  */
 
 #define maxblocks 100
+#define minblocks 50
 
 #include <iostream>
 #include "BaseBuffer.h"
 
 namespace std {
 
-BaseBuffer::BaseBuffer(): m_stop(true), m_thread(), data(5) {
-	blocksize = 1024*16;
+BaseBuffer::BaseBuffer(): m_stop(true), m_thread(), data() {
+	current = 0;
+	blocksize = 1024*32;
+	m_size = 0;
 	//m_stop = true;;
 }
 
@@ -23,8 +26,9 @@ BaseBuffer::~BaseBuffer() {
 
 void BaseBuffer::stop() {
 	cout << "stop" << endl;
+	data_mutex.lock();
 	m_stop = true;
-	m_thread.join();
+	data_mutex.unlock();
 }
 
 long BaseBuffer::getBlockLength() {
@@ -33,26 +37,49 @@ long BaseBuffer::getBlockLength() {
 
 void *BaseBuffer::nextBlock() {
 
+	if (m_stop.load() && m_size.load() < minblocks) {
 
-	if (data.size() < maxblocks + 1 && m_stop) {
+		data_mutex.lock();
 		m_stop = false;
 		cout << "start" << endl;
+		if (m_thread.joinable()) {
+			m_thread.join();
+		}
 		m_thread = thread(&BaseBuffer::makeBlocks, this);
+		data_mutex.unlock();
 	}
 
-	cout << data.size() << endl;
-	if (data.empty()) return 0;
 
-	void *item = data.at(0);
+
+	if (m_size.load() == 0) {
+		cout << "empty" << endl;
+		while (m_size.load() <= 0) {}	// wait
+	}
+
+	data_mutex.lock();
+	current = data.at(0);
 	data.erase( data.begin() );
-	return item;
+	m_size = data.size();
+	data_mutex.unlock();
+	return current;
+}
+
+void *BaseBuffer::currentBlock() {
+	return current;
 }
 
 void BaseBuffer::makeBlocks() {
-	cout << "making blocks" << endl;
-	while (data.size() < maxblocks) {
-		data.push_back( makeBlock() );
+	int size = 0;
+	while (size < maxblocks) {
+		void *make = makeBlock();
+
+		data_mutex.lock();
+		data.push_back( make );
+		m_size = data.size();
+		size = m_size.load();
+		data_mutex.unlock();
 	}
+
 	stop();
 }
 

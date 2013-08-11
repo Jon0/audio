@@ -15,8 +15,8 @@ namespace std {
 GenBuffer::GenBuffer() {
 	srand( time( NULL ) );
 
-	int blocklen = 124; //1024*32;
-	int blocks = 1024; //128;
+	int blocklen = 1024*16;
+	int blocks = 128;
 
 	length = blocks*blocklen;
 	buffer = new short[length];
@@ -28,9 +28,9 @@ GenBuffer::GenBuffer() {
 	state[7] = 1;
 	//state[10] = 1;
 
-	//for (int i = 0; i < 12; ++i) {
-	//	state[i] = rand() % 2;
-	//}
+	for (int i = 0; i < 12; ++i) {
+		state[i] = rand() % 2;
+	}
 
 	int mat[12][12] = {
 		{ 1, 1, 0, 1, 1, 1, 0, 0, 0, 1, 0, 1 },
@@ -54,7 +54,7 @@ GenBuffer::GenBuffer() {
 	float ratio = pow(2, 1.0/12.0);
 	float inc[12] = {};
 	for (int freq = 0; freq < 12; ++freq) {
-		inc[freq] = 100.0 / (440.0 * pow(ratio, freq) ); //2
+		inc[freq] = 40.0 / (440.0 * pow(ratio, freq) ); //2
 	}
 	float off[12] = {};
 	float offa = 0;
@@ -66,9 +66,10 @@ GenBuffer::GenBuffer() {
 
 			for (int freq = 0; freq < 12; ++freq) {
 				if (state[freq] > 0) {
-					buffer[blocklen * b + v] += sin( off[freq] ) * 100.0;
+					buffer[blocklen * b + v] += sin( off[freq] ) * 1000.0;
 					off[freq] += inc[freq];
 					offa += inc[freq];
+					freq += 2;
 				}
 
 			}
@@ -100,6 +101,10 @@ long GenBuffer::getBlockLength() {
 }
 
 void *GenBuffer::nextBlock() {
+	return 0;
+}
+
+void *GenBuffer::currentBlock() {
 	return 0;
 }
 

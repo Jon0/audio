@@ -15,7 +15,8 @@ namespace std {
 
 class Playback {
 	snd_pcm_uframes_t bufferSize;
-	snd_pcm_t * _soundDevice;
+	snd_pcm_t *_soundDevice;
+	short *next;
 	int lock;
 	bool Init(const char *);
 public:

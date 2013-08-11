@@ -20,8 +20,10 @@ Playback::Playback() {
 	}
 }
 
-bool Playback::Init(const char *name)
-{
+/*
+ * Initialise device
+ */
+bool Playback::Init(const char *name) {
 	int err;
 	snd_pcm_hw_params_t *hw_params;
 
@@ -127,13 +129,21 @@ bool Playback::Init(const char *name)
 	snd_pcm_hw_params_free (hw_params);
 
 	// Prepare interface for use.
-	if ((err = snd_pcm_prepare (_soundDevice)) < 0)
+	if ((err = snd_pcm_nonblock(_soundDevice, 0)) < 0)
 	{
-		cout << "Init: cannot prepare audio interface for use (" << snd_strerror (err) << ")" << endl;
+		cout << "Init: cannot set block mode (" << snd_strerror (err) << ")" << endl;
 		return false;
 	}
 	else
 	{
+		cout << "Blocking mode set." << endl;
+	}
+
+	// Prepare interface for use.
+	if ((err = snd_pcm_prepare(_soundDevice)) < 0) {
+		cout << "Init: cannot prepare audio interface for use ("<< snd_strerror(err) << ")" << endl;
+		return false;
+	} else {
 		cout << "Audio device has been prepared for use." << endl;
 	}
 
@@ -143,28 +153,27 @@ bool Playback::Init(const char *name)
 int Playback::play(long length, short *buffer) {
 	if (lock > 0) return 1;
 	lock++;
-	int blocksize = 1024*4;
+	int blocksize = 1024*2;
 	int divide = length / blocksize;
+	snd_pcm_sframes_t written = 0;
 	for (int i = 0; i < divide;) {
-		int g;
-		if ((g = snd_pcm_avail_update(_soundDevice)) < blocksize) {
-			usleep(10000);
-			continue;
-		}
 
-		//cout << i << endl;
-		snd_pcm_sframes_t written = snd_pcm_writei(_soundDevice, &buffer[i * blocksize], blocksize/2);
-		if (written < 0) {
-			cout << "playback failed: " << snd_strerror(written) << endl;
-		} else if (written < blocksize/2) {
-			cout << "incomplete write: " << written << endl;
+		//snd_pcm_wait(_soundDevice, -1);
+
+		snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &buffer[i * blocksize], blocksize/2 - written);
+		if (msg < 0) {
+			cout << "playback failed: " << snd_strerror(msg) << endl;
+		} else if (written + msg < blocksize/2) {
+			cout << "incomplete write: " << msg << endl;
+			written += msg;
 		} else {
 			++i;
+			written = 0;
 		}
 
 	}
 
-	snd_pcm_prepare (_soundDevice);
+	//snd_pcm_prepare (_soundDevice);
 	// cout << "done" << endl;
 	lock--;
 	return 0;
@@ -175,14 +184,32 @@ int Playback::playnext(source *b) {
 }
 
 int Playback::playall(source *b) {
+	if (lock > 0) return 1;
+	lock++;
+
+	int blocksize = b->getBlockLength();
+	snd_pcm_sframes_t written = 0;
+	next = (short *)b->nextBlock();
 
 	while (1) {
-		short * next = (short *)b->nextBlock();
 		if (next) {
-			play(b->getBlockLength(), next);
+			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize/2 - written);
+			if (msg < 0) {
+				cout << "playback failed: " << snd_strerror(msg) << endl;
+			} else if (written + msg < blocksize/2) {
+				cout << "incomplete write: " << msg << endl;
+				written += msg;
+			} else {
+				next = (short *)b->nextBlock();
+				written = 0;
+			}
+		}
+		else {
+			next = (short *)b->nextBlock();
 		}
 	}
 
+	lock--;
 	return 0;
 }
 
