@@ -18,7 +18,7 @@ class Playback {
 	snd_pcm_t *_soundDevice;
 	short *next;
 	int lock;
-	bool Init(const char *);
+	bool Init(const char *, int, int);
 public:
 	Playback();
 	int play(long length, short *buffer);

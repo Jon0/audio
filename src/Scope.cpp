@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include <math.h>
 #include <sys/time.h>
 #include <GL/glut.h>
 #include "Scope.h"
@@ -14,11 +15,18 @@ namespace std {
 
 Scope::Scope(source *buffer, int w, int h) {
 	b = buffer;
-	startTime = -1;
+	g_values_pre = NULL;
+
+	// view dimensions
 	view_scale = 1.0;
 	width = w;
 	height = h;
+
+	// 44100 cycles in one sec == 44.1 in millisec
+	format_hz = 44.1;
+
 }
+
 
 void Scope::init() {
 
@@ -38,49 +46,48 @@ void Scope::init() {
 
 }
 
-void Scope::start() {
-	timeval timeNow;
-	gettimeofday(&timeNow, NULL);
-	startTime = (timeNow.tv_sec * 1000) + (timeNow.tv_usec / 1000);
-}
-
 void Scope::draw() {
 	long pass = 0;
-	if (startTime > 0) {
-		timeval timeNow;
-		gettimeofday(&timeNow, NULL);
-		pass = (timeNow.tv_sec * 1000) + (timeNow.tv_usec / 1000) - startTime;
-	}
-
-	// 44100 in one sec
-	// 44.1 in millisec
-	float m = pass*44.1*2;
-
-	glLoadIdentity();
-	gluLookAt((float)m/60, 0.0, 100.0*view_scale, (float)m/60, 0.0, 0.0, 0.0, 1.0, 0.0);
-
-	//long g_numPoints = b->getLength();
-	//short *g_values = b->getData();
-
 	int g_numPoints = b->getBlockLength();
 	short *g_values = (short *)b->currentBlock();
-	if (g_values != g_values_pre) {
-		start();
+
+	if (b->startTime() > 0) {
+		timeval timeNow;
+		gettimeofday(&timeNow, NULL);
+		pass = (timeNow.tv_sec * 1000) + (timeNow.tv_usec / 1000) - b->startTime();
 	}
 
 	if (g_values) {
+		int perpix = 1000;
+		float m = (pass*format_hz*2);
+
+		glLoadIdentity();
+		gluLookAt(0.0, 0.0, 100.0*view_scale, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0);
 
 		glColor3f(0.95f, 0.207, 0.031f);
-		for (int i = ((int)m % g_numPoints); i < ((int)m % g_numPoints) + 4000 && i << g_numPoints; ++i) {
-			glColor3f(0.95f, 0.207, 0.031f);
-			glBegin(GL_POINTS);
-			glVertex3f((float) i / 60 - 24 * view_scale, (float) g_values[i] / 5000, 0);
-			glEnd();
-			glColor3f(0.15f, 0.203, 0.081f);
+		for (int i = (int)m; i < ((int)m % g_numPoints) + 24000 && i < g_numPoints;) {
+			int total = 0;
+			for (int j = 0; j < perpix; ++j) {
+				total += abs( g_values[i] );
+				++i;
+			}
+
+			//glColor3f(0.95f, 0.207, 0.031f);
+			//glBegin(GL_POINTS);
+			//glVertex3f((float) i / 60 - 24 * view_scale, (float) total / 20000, 0);
+			//glEnd();
+
+			glColor3f(0.15f, 0.903, 0.081f);
 			glBegin(GL_LINES);
-			glVertex3f((float) i / 60 - 24 * view_scale, (float) g_values[i] / 5000, 0);
-			glVertex3f((float) (i + 1) / 60 - 24 * view_scale, (float) g_values[i + 1] / 5000, 0);
+			glVertex3f((float) (i - m) / 1000, (float) total / 400000, 0);
+			glVertex3f((float) (i - m) / 1000, (float) -total / 400000, 0);
 			glEnd();
+
+			//glColor3f(0.15f, 0.903, 0.081f);
+			//glBegin(GL_LINES);
+			//glVertex3f((float) i / 60 - 24 * view_scale, (float) g_values[i] / 5000, 0);
+			//glVertex3f((float) (i + 1) / 60 - 24 * view_scale, (float) g_values[i + 1] / 5000, 0);
+			//glEnd();
 		}
 	}
 

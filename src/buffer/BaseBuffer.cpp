@@ -9,20 +9,23 @@
 #define minblocks 50
 
 #include <iostream>
+#include <sys/time.h>
 #include "BaseBuffer.h"
 
 namespace std {
 
 BaseBuffer::BaseBuffer(): m_stop(true), m_thread(), data() {
-	current = 0;
 	blocksize = 1024*32;
 	m_size = 0;
-	//m_stop = true;;
+	current = NULL;
+	current_start = 0;
 }
 
 BaseBuffer::~BaseBuffer() {
-	try { stop(); } catch(...) { /*??*/ }
-};
+	try { stop(); } catch(...) {
+		/*??*/
+	}
+}
 
 void BaseBuffer::stop() {
 	cout << "stop" << endl;
@@ -36,7 +39,6 @@ long BaseBuffer::getBlockLength() {
 }
 
 void *BaseBuffer::nextBlock() {
-
 	if (m_stop.load() && m_size.load() < minblocks) {
 
 		data_mutex.lock();
@@ -49,8 +51,7 @@ void *BaseBuffer::nextBlock() {
 		data_mutex.unlock();
 	}
 
-
-
+	// prevent null return
 	if (m_size.load() == 0) {
 		cout << "empty" << endl;
 		while (m_size.load() <= 0) {}	// wait
@@ -68,11 +69,20 @@ void *BaseBuffer::currentBlock() {
 	return current;
 }
 
+long BaseBuffer::startTime() {
+	return current_start;
+}
+
+void BaseBuffer::setStart() {
+	timeval timeNow;
+	gettimeofday(&timeNow, NULL);
+	current_start = (timeNow.tv_sec * 1000) + (timeNow.tv_usec / 1000);
+}
+
 void BaseBuffer::makeBlocks() {
 	int size = 0;
 	while (size < maxblocks) {
 		void *make = makeBlock();
-
 		data_mutex.lock();
 		data.push_back( make );
 		m_size = data.size();

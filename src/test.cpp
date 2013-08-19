@@ -20,17 +20,16 @@
 #include "process/Process.h"
 #include "buffer/TestBuffer.h"
 #include "buffer/WavBuffer.h"
-#include "buffer/GenBuffer.h"
+#include "buffer/Random.h"
 #include "buffer/TestBuffer.h"
 #include "fft/fft.h"
 
 using namespace std;
 
 GLuint g_mainWnd;
-source *b = new GenBuffer(); // new TestBuffer(); //new WavBuffer("shost2.wav"); //
+source *b =  new Random(); // new TestBuffer();//new WavBuffer("shost2.wav"); //
 Display *disp = new Scope(b, wwidth, wheight);
 Playback *player = new Playback();
-fft *ft = new fft(b);
 Process *pr = NULL;
 
 static void *begin_playback(void *);
@@ -42,10 +41,9 @@ void Keyboard(unsigned char key, int x, int y);
 void displayCallback();
 
 int main(int argc, char** argv) {
+	srand( time(NULL) ); // create random buffer
 
-	// create random buffer
-	srand( time(NULL) );
-	glutInit(&argc, argv);
+	glutInit(&argc, argv);	//
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(wwidth, wheight);
 	g_mainWnd = glutCreateWindow("Audio_Player");
@@ -65,7 +63,6 @@ int main(int argc, char** argv) {
 }
 
 static void *begin_playback(void *arg) {
-	//player->playnext(b);
 	player->playall(b);
 	return 0;
 }
@@ -90,7 +87,6 @@ void Motion(int x, int y) {
 void Keyboard(unsigned char key, int x, int y) {
 	switch (key) {
 	case 'a':
-		disp->start();
 		pthread_t threadId;
 		pthread_create(&threadId, NULL, begin_playback, NULL);
 		cout << "PLAY" << endl;
@@ -113,9 +109,7 @@ void Keyboard(unsigned char key, int x, int y) {
 
 void displayCallback() {
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
 	disp->draw();
-
 	glutSwapBuffers();
 }
 

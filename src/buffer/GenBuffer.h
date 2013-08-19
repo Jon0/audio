@@ -19,9 +19,7 @@ protected:
 public:
 	GenBuffer();
 	virtual int getFormat();
-	virtual long getLength();
 	virtual long getBlockLength();
-	virtual short *getData();
 	virtual void *nextBlock();
 	virtual void *currentBlock();
 	virtual ~GenBuffer();

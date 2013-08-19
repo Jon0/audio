@@ -14,16 +14,16 @@ namespace std {
 
 Playback::Playback() {
 	lock = 0;
-	if (!Init("hw:0,0")) {
+	if (!Init("hw:0,0", 44100, 1)) {
 		cout << "trying default" << endl;
-		Init("default");
+		Init("default", 44100, 1);
 	}
 }
 
 /*
  * Initialise device
  */
-bool Playback::Init(const char *name) {
+bool Playback::Init(const char *name, int desiredRate, int channels) {
 	int err;
 	snd_pcm_hw_params_t *hw_params;
 
@@ -86,14 +86,14 @@ bool Playback::Init(const char *name) {
 	}
 
 	// Set channels to stereo (2).
-	if ((err = snd_pcm_hw_params_set_channels (_soundDevice, hw_params, 2)) < 0)
+	if ((err = snd_pcm_hw_params_set_channels (_soundDevice, hw_params, channels)) < 0)
 	{
 		cout << "Init: cannot set channel count (" << snd_strerror (err) << ")" << endl;
 		return false;
 	}
 
 	// Set sample rate.
-	unsigned int desiredRate = 44100;
+	//unsigned int desiredRate = 44100;
 	unsigned int actualRate = desiredRate;
 	if ((err = snd_pcm_hw_params_set_rate_near (_soundDevice, hw_params, &actualRate, 0)) < 0)
 	{
@@ -180,7 +180,7 @@ int Playback::play(long length, short *buffer) {
 }
 
 int Playback::playnext(source *b) {
-	return play(b->getLength(), b->getData());
+	return play(b->getBlockLength(), (short *)b->currentBlock());
 }
 
 int Playback::playall(source *b) {
@@ -193,10 +193,11 @@ int Playback::playall(source *b) {
 
 	while (1) {
 		if (next) {
-			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize/2 - written);
+			b->setStart();	// update frame start time
+			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize - written); //blocksize/2 for stereo
 			if (msg < 0) {
 				cout << "playback failed: " << snd_strerror(msg) << endl;
-			} else if (written + msg < blocksize/2) {
+			} else if (written + msg < blocksize) { //blocksize/2 for stereo
 				cout << "incomplete write: " << msg << endl;
 				written += msg;
 			} else {

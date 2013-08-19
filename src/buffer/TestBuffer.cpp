@@ -19,7 +19,6 @@ TestBuffer::TestBuffer() {
 }
 
 TestBuffer::~TestBuffer() {
-
 }
 
 void *TestBuffer::makeBlock() {
@@ -34,13 +33,6 @@ void *TestBuffer::makeBlock() {
 }
 
 int TestBuffer::getFormat() {
-	return 0;
-}
-
-long TestBuffer::getLength() {
-	return 0;
-}
-short *TestBuffer::getData() {
 	return 0;
 }
 

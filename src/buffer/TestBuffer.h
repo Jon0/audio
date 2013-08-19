@@ -18,8 +18,6 @@ public:
 	~TestBuffer();
 
 	virtual int getFormat();
-	virtual long getLength();
-	virtual short *getData();
 
 protected:
 	float time, f;

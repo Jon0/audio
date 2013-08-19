@@ -13,7 +13,6 @@ namespace std {
 class Display {
 public:
 	virtual void init() = 0;
-	virtual void start() = 0;
 	virtual void draw() = 0;
 	virtual ~Display() {}
 };

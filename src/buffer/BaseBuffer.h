@@ -29,6 +29,8 @@ public:
 	virtual long getBlockLength();
 	virtual void *nextBlock();
 	virtual void *currentBlock();
+	virtual long startTime();
+	virtual void setStart();
 
 protected:
 	int blocksize;
@@ -43,8 +45,8 @@ private:
     mutex data_mutex;
 	vector<void *> data;
 
+	long current_start;
 	void *current; 	// the last block used
-
     void makeBlocks();
 };
 

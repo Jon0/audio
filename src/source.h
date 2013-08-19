@@ -17,11 +17,8 @@ public:
 	virtual long getBlockLength() = 0;
 	virtual void *nextBlock() = 0;
 	virtual void *currentBlock() = 0;
-
-
-	/* no longer used */
-	virtual long getLength() = 0;
-	virtual short *getData() = 0;
+	virtual long startTime() = 0;
+	virtual void setStart() = 0;
 };
 
 } /* namespace std */

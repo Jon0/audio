@@ -13,8 +13,6 @@
 namespace std {
 
 GenBuffer::GenBuffer() {
-	srand( time( NULL ) );
-
 	int blocklen = 1024*16;
 	int blocks = 128;
 
@@ -22,7 +20,6 @@ GenBuffer::GenBuffer() {
 	buffer = new short[length];
 
 	char state[12] = {};
-
 	state[0] = 1;
 	state[4] = 1;
 	state[7] = 1;
@@ -105,14 +102,6 @@ void *GenBuffer::nextBlock() {
 }
 
 void *GenBuffer::currentBlock() {
-	return 0;
-}
-
-long GenBuffer::getLength() {
-	return length;
-}
-
-short *GenBuffer::getData() {
 	return buffer;
 }
 

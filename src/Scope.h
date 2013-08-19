@@ -16,14 +16,12 @@ namespace std {
 class Scope: public Display {
 	source *b;
 	short *g_values_pre;
-	float view_scale;
-	long startTime;
+	float view_scale, format_hz;
 	int width, height;
 
 public:
 	Scope(source *, int, int);
 	virtual void init();
-	virtual void start();
 	virtual void draw();
 	virtual ~Scope();
 };
