@@ -21,10 +21,12 @@ class Playback {
 	bool Init(const char *, int, int);
 public:
 	Playback();
+	virtual ~Playback();
+
 	int play(long length, short *buffer);
 	int playnext(source *);
 	int playall(source *);
-	virtual ~Playback();
+	int playTest();
 };
 
 } /* namespace std */

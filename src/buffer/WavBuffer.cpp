@@ -73,6 +73,13 @@ void *WavBuffer::currentBlock() {
 	return array;
 }
 
+long WavBuffer::startTime() {
+	return 0;
+}
+void WavBuffer::setStart() {
+	// do nothing
+}
+
 WavBuffer::~WavBuffer() {
 	// TODO Auto-generated destructor stub
 }

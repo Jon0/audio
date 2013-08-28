@@ -10,7 +10,7 @@
 
 #include <iostream>
 #include <fstream>
-#include "../source.h"
+#include "../unused/source.h"
 
 namespace std {
 
@@ -49,6 +49,8 @@ public:
 	virtual long getBlockLength();
 	virtual void *nextBlock();
 	virtual void *currentBlock();
+	virtual long startTime();
+	virtual void setStart();
 	virtual ~WavBuffer();
 };
 

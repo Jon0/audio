@@ -17,19 +17,19 @@
 #include "Display.h"
 #include "Scope.h"
 #include "Playback.h"
-#include "process/Process.h"
-#include "buffer/TestBuffer.h"
-#include "buffer/WavBuffer.h"
-#include "buffer/Random.h"
-#include "buffer/TestBuffer.h"
-#include "fft/fft.h"
+#include "../process/Process.h"
+#include "../buffer/TestBuffer.h"
+#include "../buffer/WavBuffer.h"
+#include "../buffer/Random.h"
+#include "../buffer/TestBuffer.h"
+#include "../fft/fft.h"
 
 using namespace std;
 
 GLuint g_mainWnd;
-source *b =  new Random(); // new TestBuffer();//new WavBuffer("shost2.wav"); //
-Display *disp = new Scope(b, wwidth, wheight);
-Playback *player = new Playback();
+source *b;
+Display *disp;
+Playback *player;
 Process *pr = NULL;
 
 static void *begin_playback(void *);
@@ -40,10 +40,14 @@ void Motion(int x, int y);
 void Keyboard(unsigned char key, int x, int y);
 void displayCallback();
 
-int main(int argc, char** argv) {
+int notmainold() {
+	b = new Random(); //new WavBuffer("shost2.wav"); //new TestBuffer(); //
+	disp = new Scope(b, wwidth, wheight);
+	player = new Playback();
+
 	srand( time(NULL) ); // create random buffer
 
-	glutInit(&argc, argv);	//
+	//glutInit(&argc, argv);	//
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
 	glutInitWindowSize(wwidth, wheight);
 	g_mainWnd = glutCreateWindow("Audio_Player");
@@ -63,7 +67,9 @@ int main(int argc, char** argv) {
 }
 
 static void *begin_playback(void *arg) {
-	player->playall(b);
+	//player->play(b->getBlockLength(), (short *)b->currentBlock());
+	//player->playall(b);
+	player->playTest();
 	return 0;
 }
 

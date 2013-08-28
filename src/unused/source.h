@@ -12,7 +12,6 @@ namespace std {
 class source {
 public:
 	virtual ~source() {};
-
 	virtual int getFormat() = 0;
 	virtual long getBlockLength() = 0;
 	virtual void *nextBlock() = 0;

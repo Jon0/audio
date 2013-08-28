@@ -8,16 +8,23 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <iostream>
+
+#include <math.h>
 #include "Playback.h"
 
 namespace std {
 
 Playback::Playback() {
 	lock = 0;
-	if (!Init("hw:0,0", 44100, 1)) {
+	if (!Init("plughw:0,0", 44100, 1)) {
 		cout << "trying default" << endl;
 		Init("default", 44100, 1);
 	}
+}
+
+Playback::~Playback() {
+	snd_pcm_drain(_soundDevice);
+	snd_pcm_close(_soundDevice);
 }
 
 /*
@@ -129,7 +136,7 @@ bool Playback::Init(const char *name, int desiredRate, int channels) {
 	snd_pcm_hw_params_free (hw_params);
 
 	// Prepare interface for use.
-	if ((err = snd_pcm_nonblock(_soundDevice, 0)) < 0)
+	if ((err = snd_pcm_nonblock(_soundDevice, 1)) < 0)
 	{
 		cout << "Init: cannot set block mode (" << snd_strerror (err) << ")" << endl;
 		return false;
@@ -173,7 +180,7 @@ int Playback::play(long length, short *buffer) {
 
 	}
 
-	//snd_pcm_prepare (_soundDevice);
+	snd_pcm_prepare (_soundDevice);
 	// cout << "done" << endl;
 	lock--;
 	return 0;
@@ -214,9 +221,26 @@ int Playback::playall(source *b) {
 	return 0;
 }
 
-Playback::~Playback() {
-	snd_pcm_drain(_soundDevice);
-	snd_pcm_close(_soundDevice);
+int Playback::playTest() {
+	int written = 0;
+	int blocksize = 1024;
+	short *block = new short [blocksize];
+	float f = 0;
+	while (1) {
+		snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &block[written], blocksize - written );
+		if (msg < 0) {
+			cout << "playback failed: " << snd_strerror(msg) << endl;
+		} else if (written + msg < blocksize) { //blocksize/2 for stereo
+			cout << "incomplete write: " << msg << endl;
+			written += msg;
+		} else {
+			written = 0;
+			for (int i = 0; i < blocksize; ++i) {
+				block[i] = sin(f) * 1024*16;
+				f += 0.1;
+			}
+		}
+	}
 }
 
 } /* namespace std */
