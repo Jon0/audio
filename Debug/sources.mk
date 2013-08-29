@@ -25,6 +25,7 @@ C_UPPER_DEPS :=
 SUBDIRS := \
 src/unused \
 src/process \
+src/playback \
 src/math \
 src \
 src/fft \

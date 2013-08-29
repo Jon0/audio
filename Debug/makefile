@@ -10,6 +10,7 @@ RM := rm -rf
 -include sources.mk
 -include src/unused/subdir.mk
 -include src/process/subdir.mk
+-include src/playback/subdir.mk
 -include src/math/subdir.mk
 -include src/fft/subdir.mk
 -include src/buffer/subdir.mk
@@ -49,7 +50,7 @@ all: asound2
 asound2: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross G++ Linker'
-	g++  -o "asound2" $(OBJS) $(USER_OBJS) $(LIBS)
+	g++ -L/usr/pkg/lib/ -o "asound2" $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 

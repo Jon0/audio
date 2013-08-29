@@ -4,5 +4,5 @@
 
 USER_OBJS :=
 
-LIBS := -lGLU -lglut -lasound -lpthread -lGL
+LIBS := -lGLU -lpulse-simple -lpulse -lglut -lasound -lpthread -lGL
 
