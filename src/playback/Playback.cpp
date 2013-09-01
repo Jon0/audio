@@ -135,15 +135,15 @@ bool Playback::Init(const char *name, int desiredRate, int channels) {
 	// Free the hardware parameters now that we're done with them.
 	snd_pcm_hw_params_free (hw_params);
 
-	// Prepare interface for use.
-	if ((err = snd_pcm_nonblock(_soundDevice, 1)) < 0)
+	// Set non-blocking
+	if ((err = snd_pcm_nonblock(_soundDevice, SND_PCM_NONBLOCK)) < 0)
 	{
-		cout << "Init: cannot set block mode (" << snd_strerror (err) << ")" << endl;
+		cout << "Init: cannot set non-block mode (" << snd_strerror (err) << ")" << endl;
 		return false;
 	}
 	else
 	{
-		cout << "Blocking mode set." << endl;
+		cout << "Non-blocking mode set." << endl;
 	}
 
 	// Prepare interface for use.
@@ -164,9 +164,7 @@ int Playback::play(long length, short *buffer) {
 	int divide = length / blocksize;
 	snd_pcm_sframes_t written = 0;
 	for (int i = 0; i < divide;) {
-
-		//snd_pcm_wait(_soundDevice, -1);
-
+		snd_pcm_wait(_soundDevice, -1);
 		snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &buffer[i * blocksize], blocksize/2 - written);
 		if (msg < 0) {
 			cout << "playback failed: " << snd_strerror(msg) << endl;
@@ -201,11 +199,12 @@ int Playback::playall(source *b) {
 	while (1) {
 		if (next) {
 			b->setStart();	// update frame start time
+			snd_pcm_wait(_soundDevice, -1);
 			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize - written); //blocksize/2 for stereo
 			if (msg < 0) {
 				cout << "playback failed: " << snd_strerror(msg) << endl;
 			} else if (written + msg < blocksize) { //blocksize/2 for stereo
-				cout << "incomplete write: " << msg << endl;
+				//cout << "incomplete write: " << msg << endl;
 				written += msg;
 			} else {
 				next = (short *)b->nextBlock();
@@ -227,6 +226,7 @@ int Playback::playTest() {
 	short *block = new short [blocksize];
 	float f = 0;
 	while (1) {
+		snd_pcm_wait(_soundDevice, -1);
 		snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &block[written], blocksize - written );
 		if (msg < 0) {
 			cout << "playback failed: " << snd_strerror(msg) << endl;

@@ -9,7 +9,7 @@
 #define PLAYBACK_H_
 
 #include <alsa/asoundlib.h>
-#include "source.h"
+#include "../playback//source.h"
 
 namespace std {
 

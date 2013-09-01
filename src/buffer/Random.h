@@ -8,7 +8,7 @@
 #ifndef RANDOM_H_
 #define RANDOM_H_
 
-#define mx 48
+#define mx 72
 
 #include "BaseBuffer.h"
 

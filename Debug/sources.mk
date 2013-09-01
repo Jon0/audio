@@ -23,11 +23,14 @@ C_UPPER_DEPS :=
 
 # Every subdirectory with source files must be described here
 SUBDIRS := \
+src/window \
+src/view \
 src/unused \
 src/process \
 src/playback \
 src/math \
 src \
 src/fft \
+src/display \
 src/buffer \
 

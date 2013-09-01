@@ -55,7 +55,7 @@ void *Random::makeBlock() {
 	mult();
 	char *currenti = new char[mx];
 	for (int i= 0; i < mx; ++i) {
-		currentf[i] /= 8.0;
+		//currentf[i] /= 8.0;
 		currentf[i] += (state[back - 1][i] + state[back - 2][i]
 				+ state[back - 3][i] + state[back - 5][i] + state[back - 7][i]
 				+ state[back - 11][i] + state[back - 13][i] + state[back - 17][i] + state[back - 19][i]);
@@ -75,8 +75,8 @@ void *Random::makeBlock() {
 				//currentf_d[freq] *= ((float)(16384 + (rand() % 32) - 16))/ 16384.0;
 				//if (currentf[freq] > 4.0) currentf_d[freq] *= 0.98;
 				//else if (currentf[freq] < 0.1) currentf_d[freq] *= 1.02;
-				currentf[freq] +=  ((float)0.5 + (rand() % 32) - 16) / currentf_d[freq]; //currentf_d[freq] - 1.0;
-
+				//currentf[freq] +=  ((float)0.5 + (rand() % 32) - 16) / currentf_d[freq]; //currentf_d[freq] - 1.0;
+				currentf[freq] = 1.0;
 				buffer[v] += sin( off[freq] ) * 100.0 * currentf[freq];
 				off[freq] += inc[freq];
 

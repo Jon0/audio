@@ -4,12 +4,15 @@
 
 # Add inputs and outputs from these tool invocations to the build variables 
 CPP_SRCS += \
+../src/playback/Playback.cpp \
 ../src/playback/Pulse.cpp 
 
 OBJS += \
+./src/playback/Playback.o \
 ./src/playback/Pulse.o 
 
 CPP_DEPS += \
+./src/playback/Playback.d \
 ./src/playback/Pulse.d 
 
 

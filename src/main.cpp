@@ -6,13 +6,26 @@
  */
 
 #include <stdlib.h>
-#include "playback/Pulse.h"
+#include <GL/glut.h>
+
+#include "window/MainWindow.h"
+#include "playback/Playback.h"
+#include "playback/source.h"
+#include "buffer/Random.h"
 
 using namespace std;
 
 int main(int argc, char *argv[]) {
-	Pulse *p = new Pulse(argv[0]);
-	delete p;
+	glutInit(&argc, argv);
+
+	//new MainWindow(800, 600);
+
+	source *b = new Random();
+	Playback *play = new Playback();
+	play->playall(b);
+	//play->playTest();
+
+
 
 	return EXIT_SUCCESS;
 }

@@ -14,9 +14,9 @@
 #include <GL/glut.h>
 #include <GL/glu.h>
 #include <sys/time.h>
-#include "Display.h"
-#include "Scope.h"
-#include "Playback.h"
+#include "../display/Display.h"
+#include "../display/Scope.h"
+#include "../playback/Playback.h"
 #include "../process/Process.h"
 #include "../buffer/TestBuffer.h"
 #include "../buffer/WavBuffer.h"
