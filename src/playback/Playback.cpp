@@ -200,10 +200,10 @@ int Playback::playall(source *b) {
 		if (next) {
 			b->setStart();	// update frame start time
 			snd_pcm_wait(_soundDevice, -1);
-			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize - written); //blocksize/2 for stereo
+			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize - written);
 			if (msg < 0) {
 				cout << "playback failed: " << snd_strerror(msg) << endl;
-			} else if (written + msg < blocksize) { //blocksize/2 for stereo
+			} else if (written + msg < blocksize) {
 				//cout << "incomplete write: " << msg << endl;
 				written += msg;
 			} else {
