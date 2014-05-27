@@ -50,11 +50,11 @@ TestBuffer::TestBuffer() {
 	}
 	off[mx] = {};
 
-	f1 = 0;
-	f2 = 1;
+	f1 = rand();
+	f2 = rand();
 
-	fx1 = 0;
-	fx2 = 1;
+	fx1 = rand();
+	fx2 = rand();
 }
 
 TestBuffer::~TestBuffer() {
