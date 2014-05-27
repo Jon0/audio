@@ -53,7 +53,7 @@ void *BaseBuffer::nextBlock() {
 
 	// prevent null return
 	if (m_size.load() == 0) {
-		cout << "empty" << endl;
+		//cout << "empty: next block not ready" << endl;
 		while (m_size.load() <= 0) {}	// wait
 	}
 

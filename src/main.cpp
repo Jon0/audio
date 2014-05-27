@@ -11,7 +11,7 @@
 #include "window/MainWindow.h"
 #include "playback/Playback.h"
 #include "playback/source.h"
-#include "buffer/Random.h"
+#include "buffer/TestBuffer.h"
 
 using namespace std;
 
@@ -20,7 +20,7 @@ int main(int argc, char *argv[]) {
 
 	//new MainWindow(800, 600);
 
-	source *b = new Random();
+	source *b = new TestBuffer();
 	Playback *play = new Playback();
 	play->playall(b);
 	//play->playTest();

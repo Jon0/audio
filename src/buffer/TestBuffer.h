@@ -8,6 +8,8 @@
 #ifndef TESTBUFFER_H_
 #define TESTBUFFER_H_
 
+#define mx 72
+
 #include "BaseBuffer.h"
 
 namespace std {
@@ -20,7 +22,15 @@ public:
 	virtual int getFormat();
 
 protected:
-	float time, f;
+	char **state;
+	int back, mat[mx][mx];
+	float ratio, off[mx], inc[mx];
+	float currentf[mx];
+	float currentf_d[mx];
+
+	int f1, f2, fx1, fx2;
+
+	void mult();
 	virtual void *makeBlock();
 
 
