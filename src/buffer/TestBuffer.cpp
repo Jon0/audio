@@ -54,11 +54,7 @@ TestBuffer::TestBuffer() {
 	}
 	off[mx] = {};
 
-	f1 = rand();
-	f2 = rand();
-
-	fx1 = rand();
-	fx2 = rand();
+	time = 0;
 }
 
 TestBuffer::~TestBuffer() {
@@ -66,55 +62,60 @@ TestBuffer::~TestBuffer() {
 }
 
 void *TestBuffer::makeBlock() {
-//	mult();
-//	char *currenti = new char[mx];
-//	for (int i= 0; i < mx; ++i) {
-//		//currentf[i] /= 8.0;
-//		currentf[i] += (state[back - 1][i] + state[back - 2][i]
-//				+ state[back - 3][i] + state[back - 5][i] + state[back - 7][i]
-//				+ state[back - 11][i] + state[back - 13][i] + state[back - 17][i] + state[back - 19][i]);
-//		currenti[i] = ((int) currentf[i]) % 2;
-//
-//		currentf_d[i] = 256 + (rand() % 256); //((float)(16384 + (rand() % 32) - 16))/ 2048.0;
-//	}
-	//state[back - 1] = currenti;
-
 	short *buffer = new short[blocksize]();
 
 
-	unsigned int next = f1 + f2;
-	f1 = f2;
-	f2 = next;
-	unsigned int freq = 6 + (next % 12);
+	vector<note> nts = tree.sample(time, time + blocksize);
+	for (note nt: nts) {
+		unsigned int a = max(nt.start, time) - time;
+		unsigned int b = min(nt.start + nt.length, time + blocksize ) - time;
 
-	unsigned int nextx = fx1 + fx2;
-	fx1 = f2;
-	fx2 = next;
-	unsigned int freqx = freq + nextx % 24;
+		// note completion at point a
+		// time = 1000, nstart = 700, length = 1000 ... so a = 0, os = 300
+		// time = 0, nstart = 700, length = 1000 ... so a = 700, os = -700
+		unsigned int os = time - nt.start;
 
-	//cout << inc[freq] << " (" << freq << ", " << next << ")" << endl;
-
-	float g = 0.0f;
-	for (int v = 0; v < blocksize / 2; ++v) {
-		buffer[v] += sin( off[freq] ) * 1000.0;
-		off[freq] += inc[freq];
-
-		buffer[v] += sin( off[freqx] ) * 1000.0;
-		off[freqx] += inc[freqx];
+		for (int v = a; v < b; ++v) {
+			unsigned int nfreq = nt.value;
+			float p = ((float)(v+os) / nt.length);
+			float volume1 = p * (1.0f - p) * 4;
+			buffer[v] += sin( off[nfreq] ) * 300.0 * volume1;
+			off[nfreq] += inc[nfreq];
+		}
 	}
+	time += blocksize;
 
-	nextx = fx1 + fx2;
-	fx1 = f2;
-	fx2 = next;
-	freqx = freq + nextx % 24;
 
-	for (int v = blocksize / 2; v < blocksize; ++v) {
-		buffer[v] += sin( off[freq] ) * 1000.0;
-		off[freq] += inc[freq];
-
-		buffer[v] += sin( off[freqx] ) * 1000.0;
-		off[freqx] += inc[freqx];
-	}
+//	unsigned int next = s1.next();
+//	unsigned int freq = 6 + ((7 * next) % 12);
+//	unsigned int nextx = s1.next();
+//	unsigned int freqx = freq + nextx % 24;
+//	float length = blocksize;
+//	float g = 0.0f;
+//	for (int v = 0; v < blocksize / 2; ++v) {
+//		float p = ((float)v / blocksize);
+//		float volume1 = p * (1.0f - p) * 4;
+//		buffer[v] += sin( off[freq] ) * 1000.0 * volume1;
+//		off[freq] += inc[freq];
+//
+//		float p2 = ((float)v / (blocksize / 2) );
+//		float volume2 = p2 * (1.0f - p2) * 4;
+//		buffer[v] += sin( off[freqx] ) * 1000.0 * volume2;
+//		off[freqx] += inc[freqx];
+//	}
+//	nextx = s1.next();
+//	freqx = freq + nextx % 24;
+//	for (int v = blocksize / 2; v < blocksize; ++v) {
+//		float p = ((float)v / blocksize);
+//		float volume1 = p * (1.0f - p) * 4;
+//		buffer[v] += sin( off[freq] ) * 1000.0 * volume1;
+//		off[freq] += inc[freq];
+//
+//		float p2 = ((float)(v - blocksize / 2) / (blocksize / 2) );
+//		float volume2 = p2 * (1.0f - p2) * 4;
+//		buffer[v] += sin( off[freqx] ) * 1000.0 * volume2;
+//		off[freqx] += inc[freqx];
+//	}
 
 	return (void *) buffer;
 }

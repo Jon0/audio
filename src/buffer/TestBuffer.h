@@ -11,6 +11,8 @@
 #define mx 72
 
 #include "BaseBuffer.h"
+#include "../math/Series.h"
+#include "../math/TimeTree.h"
 
 namespace std {
 
@@ -28,7 +30,9 @@ protected:
 	float currentf[mx];
 	float currentf_d[mx];
 
-	unsigned int f1, f2, fx1, fx2;
+	unsigned int time;
+	Series s1;
+	TimeTree tree;
 
 	void mult();
 	virtual void *makeBlock();
