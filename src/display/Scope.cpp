@@ -48,7 +48,7 @@ void Scope::init() {
 
 void Scope::draw() {
 	long pass = 0;
-	int g_numPoints = b->getBlockLength();
+	int g_numPoints = b->available();
 	short *g_values = (short *)b->currentBlock();
 
 	if (b->startTime() > 0) {

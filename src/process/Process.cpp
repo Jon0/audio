@@ -18,18 +18,18 @@ Process::Process(source *b) {
 	// sublength, i, and j
 
 	float *pos = new float [2];
-	for (int sub = 1; sub < buf->getBlockLength(); ++sub) {
-		printf("complete: %d/%ld\n", sub, buf->getBlockLength());
+	for (int sub = 1; sub < buf->available(); ++sub) {
+		printf("complete: %d/%ld\n", sub, buf->available());
 
 		// for every possible start point i that allows given sub length of selection
-		for (int i = 0; i < buf->getBlockLength() - sub; ++i) {
+		for (int i = 0; i < buf->available() - sub; ++i) {
 
 			Vector *x = read(i, sub);
 			cout << "x[" << i << "] = ";
 			x->print();
 			cout << endl;
 
-			for (int j = i + 1; j < buf->getBlockLength() - sub; ++j) {
+			for (int j = i + 1; j < buf->available() - sub; ++j) {
 				int difference = j - i;
 
 				// make a vector from position/length

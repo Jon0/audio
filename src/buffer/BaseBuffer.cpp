@@ -27,6 +27,10 @@ BaseBuffer::~BaseBuffer() {
 	}
 }
 
+int BaseBuffer::getFormat() {
+	return 0;
+}
+
 void BaseBuffer::stop() {
 	cout << "stop" << endl;
 	data_mutex.lock();
@@ -34,11 +38,11 @@ void BaseBuffer::stop() {
 	data_mutex.unlock();
 }
 
-long BaseBuffer::getBlockLength() {
+long BaseBuffer::available() {
 	return blocksize;
 }
 
-void *BaseBuffer::nextBlock() {
+void *BaseBuffer::next() {
 	if (m_stop.load() && m_size.load() < minblocks) {
 
 		data_mutex.lock();

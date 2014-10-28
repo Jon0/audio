@@ -11,7 +11,7 @@
 
 namespace std {
 
-Vector::Vector(int i, float *f) {
+Vector::Vector(uint i, float *f) {
 	elements = i;
 	//data = new float [elements];
 	//for (int i = 0; i < elements; ++i) data[i] = f[i];
@@ -23,7 +23,7 @@ Vector *Vector::cross(Vector *other) {
 	if (elements != other->elements) return NULL;
 
 	float *result = new float [elements];
-	for (int i = 0; i < elements; ++i) {
+	for (uint i = 0; i < elements; ++i) {
 		int k = (i+1)%elements;
 		result[i] = data[i]*other->data[k]-data[k]*other->data[i];
 	}

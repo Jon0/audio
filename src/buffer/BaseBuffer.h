@@ -25,12 +25,16 @@ public:
 	BaseBuffer(BaseBuffer const&) = delete;
 	BaseBuffer& operator =(BaseBuffer const&) = delete;
 
+	virtual int getFormat();
+	long available();
+	void *next();
+
+
+	void *currentBlock();
+	long startTime();
+	void setStart();
+
 	void stop();
-	virtual long getBlockLength();
-	virtual void *nextBlock();
-	virtual void *currentBlock();
-	virtual long startTime();
-	virtual void setStart();
 
 protected:
 	int blocksize;

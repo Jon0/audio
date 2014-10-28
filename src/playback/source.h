@@ -13,8 +13,14 @@ class source {
 public:
 	virtual ~source() {};
 	virtual int getFormat() = 0;
-	virtual long getBlockLength() = 0;
-	virtual void *nextBlock() = 0;
+
+	// available gives how much can be
+	// read before calling next again
+	virtual long available() = 0;
+	virtual void *next() = 0;
+
+
+	// unused?
 	virtual void *currentBlock() = 0;
 	virtual long startTime() = 0;
 	virtual void setStart() = 0;

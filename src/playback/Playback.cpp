@@ -185,38 +185,35 @@ int Playback::play(long length, short *buffer) {
 }
 
 int Playback::playnext(source *b) {
-	return play(b->getBlockLength(), (short *)b->currentBlock());
+	return play(b->available(), (short *)b->currentBlock());
 }
 
 int Playback::playall(source *b) {
-	if (lock > 0) return 1;
-	lock++;
-
-	int blocksize = b->getBlockLength();
-	snd_pcm_sframes_t written = 0;
-	next = (short *)b->nextBlock();
+	snd_pcm_uframes_t available = 0;
+	short *next = 0;
 
 	while (1) {
 		if (next) {
 			b->setStart();	// update frame start time
 			snd_pcm_wait(_soundDevice, -1);
-			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, &next[written], blocksize - written);
+			snd_pcm_sframes_t msg = snd_pcm_writei(_soundDevice, next, available);
 			if (msg < 0) {
 				cout << "playback failed: " << snd_strerror(msg) << endl;
-			} else if (written + msg < blocksize) {
-				//cout << "incomplete write: " << msg << endl;
-				written += msg;
+				break;
+			} else if (msg < available) {
+				// incomplete write
+				available -= msg;
+				next += msg;
 			} else {
-				next = (short *)b->nextBlock();
-				written = 0;
+				available = b->available();
+				next = (short *)b->next();
 			}
 		}
 		else {
-			next = (short *)b->nextBlock();
+			available = b->available();
+			next = (short *)b->next();
 		}
 	}
-
-	lock--;
 	return 0;
 }
 

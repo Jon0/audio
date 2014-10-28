@@ -11,10 +11,10 @@
 namespace std {
 
 class Vector {
-	int elements;
+	uint elements;
 	float *data;
 public:
-	Vector(int, float *);
+	Vector(uint, float *);
 	Vector *cross(Vector *);
 	void print();
 	virtual ~Vector();

@@ -14,11 +14,6 @@
 namespace std {
 
 class Playback {
-	snd_pcm_uframes_t bufferSize;
-	snd_pcm_t *_soundDevice;
-	short *next;
-	int lock;
-	bool Init(const char *, int, int);
 public:
 	Playback();
 	virtual ~Playback();
@@ -27,6 +22,13 @@ public:
 	int playnext(source *);
 	int playall(source *);
 	int playTest();
+
+private:
+	snd_pcm_uframes_t bufferSize;
+	snd_pcm_t *_soundDevice;
+	int lock;
+	bool Init(const char *, int, int);
+
 };
 
 } /* namespace std */
