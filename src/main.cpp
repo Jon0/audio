@@ -5,8 +5,6 @@
  *      Author: asdf
  */
 
-
-
 #include <stdlib.h>
 #include <GL/glut.h>
 
@@ -43,7 +41,9 @@ int main(int argc, char *argv[]) {
 
 		short s5 =  ((td>>5|td|td>>9)*6^4*(td&td>>11|td>>9))>>((td>>11)*(td>>13) % 3);
 
-		return (s5 & 0xff) * 100;
+		short s6 =  (((td>>5|td|td>>9)*6^4*(td&td>>11|td>>9))>>((td>>11)*(td>>13) % 3))|(td>>(13-((td>>7)*(td>>23) % 13)));
+
+		return (s6 & 0xff) * 50;
 	};
 
 	source *b = new FunctionBuffer(f);

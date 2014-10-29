@@ -23,9 +23,7 @@ WavBuffer::WavBuffer(const char *fname) {
 	ReadRIFF();
 	ReadFMT();
 
-	length = 1024*256;
-	array = new short [length];
-	//file.read ( (char *)array, length*2 );
+
 
 	int chunk2Id = 0;
 	int chunk2Size = 0;

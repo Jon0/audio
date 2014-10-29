@@ -10,26 +10,10 @@
 
 #include <iostream>
 #include <fstream>
+#include "../io/wav.h"
 #include "../playback/source.h"
 
 namespace std {
-
-struct RIFF {
-	int ChunkID;
-	int ChunkSize;
-	int Format;
-};
-
-struct FMT {
-	int ID;
-	int size;
-	short format;
-	short channels;
-	int sampleRate;
-	int byteRate;
-	short blockAlign;
-	short bitsPerSample;
-};
 
 class WavBuffer: public source {
 protected:
