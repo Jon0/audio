@@ -43,7 +43,7 @@ int main(int argc, char *argv[]) {
 
 		short s6 =  (((td>>5|td|td>>9)*6^4*(td&td>>11|td>>9))>>((td>>11)*(td>>13) % 3))|(td>>(13-((td>>7)*(td>>23) % 13)));
 
-		return (s6 & 0xff) * 50;
+		return (s6 & 0xff) * 200;
 	};
 
 	source *b = new FunctionBuffer(f);
