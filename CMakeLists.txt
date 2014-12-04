@@ -8,24 +8,26 @@ find_package(GLUT REQUIRED)
 find_package(ALSA REQUIRED)
 find_package(Threads REQUIRED)
 
+# TODO: generate errors when not found
+
 include_directories( ${ALSA_INCLUDE_DIR} ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
 
-
+set( CPP_PATH "cpp" )
 
 
 #include_directories ("${PROJECT_BINARY_DIR}")
 
 
 file(GLOB SRC_FILES
-    "src/*.cpp"
-    "src/buffer/*.cpp"
-    "src/display/*.cpp"
-    "src/fft/*.cpp"
-    "src/math/*.cpp"
-    "src/playback/*.cpp"
-    "src/process/*.cpp"
-    "src/view/*.cpp"
-    "src/window/*.cpp"
+    "${CPP_PATH}/*.cpp"
+    "${CPP_PATH}/buffer/*.cpp"
+    "${CPP_PATH}/display/*.cpp"
+    "${CPP_PATH}/fft/*.cpp"
+    "${CPP_PATH}/math/*.cpp"
+    "${CPP_PATH}/playback/*.cpp"
+    "${CPP_PATH}/process/*.cpp"
+    "${CPP_PATH}/view/*.cpp"
+    "${CPP_PATH}/window/*.cpp"
 )
 
 add_definitions(-std=c++11)
