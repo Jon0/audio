@@ -1,12 +1,7 @@
-/*
- * Matrix.cpp
- *
- *  Created on: 19/08/2013
- *      Author: remnanjona
- */
-
 #include <stdlib.h>
 #include "Matrix.h"
+
+namespace math {
 
 Matrix::Matrix(int width, int height) {
 	mat = new int [width*height];
@@ -47,3 +42,4 @@ Matrix::~Matrix() {
 	// TODO Auto-generated destructor stub
 }
 
+} // namespace math

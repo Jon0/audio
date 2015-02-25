@@ -1,12 +1,7 @@
-/*
- * Matrix.h
- *
- *  Created on: 19/08/2013
- *      Author: remnanjona
- */
-
 #ifndef MATRIX_H_
 #define MATRIX_H_
+
+namespace math {
 
 class Matrix {
 	int w, h, *mat;
@@ -19,5 +14,7 @@ public:
 	float *VecMultiply(float *vec, int length);
 	virtual ~Matrix();
 };
+
+} // namespace math
 
 #endif /* MATRIX_H_ */
