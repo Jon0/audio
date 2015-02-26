@@ -3,7 +3,7 @@
 
 #include "Note.h"
 
-namespace math {
+namespace score {
 
 Note::Note(double f)
 	:
@@ -29,4 +29,4 @@ short Note::get(long t) const {
 	return r;
 }	
 
-} // namespace math
+} // namespace score

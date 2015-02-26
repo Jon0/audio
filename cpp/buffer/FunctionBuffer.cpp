@@ -18,7 +18,9 @@ FunctionBuffer::~FunctionBuffer() {}
 
 void *FunctionBuffer::makeBlock() {
 	short *buffer = new short[blocksize];
-	for (int i = 0; i < blocksize; ++i) buffer[i] = fn(t++);
+	for (int i = 0; i < blocksize; ++i) {
+		buffer[i] = fn(t++);
+	}
 	return (void *) buffer;
 }
 

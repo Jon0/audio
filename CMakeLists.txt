@@ -26,6 +26,7 @@ file(GLOB SRC_FILES
     "${CPP_PATH}/math/*.cpp"
     "${CPP_PATH}/playback/*.cpp"
     "${CPP_PATH}/process/*.cpp"
+    "${CPP_PATH}/score/*.cpp"
     "${CPP_PATH}/view/*.cpp"
     "${CPP_PATH}/window/*.cpp"
 )

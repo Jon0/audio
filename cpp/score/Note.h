@@ -3,7 +3,7 @@
 
 #include <vector>
 
-namespace math {
+namespace score {
 
 class Note {
 public:
@@ -19,6 +19,6 @@ private:
 
 };
 
-} // namespace math
+} // namespace score
 
 #endif

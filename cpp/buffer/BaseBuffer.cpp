@@ -5,9 +5,10 @@
  *      Author: remnanjona
  */
 
-#define maxblocks 100
-#define minblocks 50
+#define maxblocks 5
+#define minblocks 1
 
+#include <chrono>
 #include <iostream>
 #include <sys/time.h>
 #include "BaseBuffer.h"
@@ -15,7 +16,7 @@
 namespace std {
 
 BaseBuffer::BaseBuffer(): m_stop(true), m_thread(), data() {
-	blocksize = 1024*32;
+	blocksize = 512; //1024*32;
 	m_size = 0;
 	current = NULL;
 	current_start = 0;
@@ -43,6 +44,8 @@ long BaseBuffer::available() {
 }
 
 void *BaseBuffer::next() {
+
+	// start producing blocks if number is below threshold
 	if (m_stop.load() && m_size.load() < minblocks) {
 
 		data_mutex.lock();
@@ -57,8 +60,10 @@ void *BaseBuffer::next() {
 
 	// prevent null return
 	if (m_size.load() == 0) {
-		//cout << "empty: next block not ready" << endl;
-		while (m_size.load() <= 0) {}	// wait
+		// cout << "empty: next block not ready" << endl;
+		while (m_size.load() <= 0) {
+			this_thread::sleep_for(chrono::milliseconds(30));
+		}	// wait
 	}
 
 	data_mutex.lock();

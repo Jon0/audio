@@ -23,6 +23,10 @@ public:
 	// unused?
 	virtual void *currentBlock() = 0;
 	virtual long startTime() = 0;
+
+	/**
+	 * called when playback begins
+	 */
 	virtual void setStart() = 0;
 };
 
