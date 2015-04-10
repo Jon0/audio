@@ -7,8 +7,8 @@
 #include <GL/glut.h>
 
 #include "window/MainWindow.h"
-#include "playback/Playback.h"
-#include "playback/source.h"
+#include "device/Mixer.h"
+#include "device/Source.h"
 #include "buffer/FunctionBuffer.h"
 #include "buffer/TestBuffer.h"
 #include "score/Note.h"
@@ -55,9 +55,9 @@ int main(int argc, char *argv[]) {
 
 
 	thread t([f]() {	
-		source *b = new FunctionBuffer(f);
-		Playback *play = new Playback();
-		play->playall(b);
+		device::Source *b = new FunctionBuffer(f);
+		device::Mixer *mixer = new device::Mixer();
+		mixer->playall(b);
 	});
 
 

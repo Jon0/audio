@@ -12,7 +12,7 @@ find_package(Threads REQUIRED)
 
 include_directories( ${ALSA_INCLUDE_DIR} ${OPENGL_INCLUDE_DIRS}  ${GLUT_INCLUDE_DIRS} )
 
-set( CPP_PATH "cpp" )
+set( CPP_PATH "src" )
 
 
 #include_directories ("${PROJECT_BINARY_DIR}")
@@ -21,10 +21,10 @@ set( CPP_PATH "cpp" )
 file(GLOB SRC_FILES
     "${CPP_PATH}/*.cpp"
     "${CPP_PATH}/buffer/*.cpp"
+    "${CPP_PATH}/device/*.cpp"
     "${CPP_PATH}/display/*.cpp"
     "${CPP_PATH}/fft/*.cpp"
     "${CPP_PATH}/math/*.cpp"
-    "${CPP_PATH}/playback/*.cpp"
     "${CPP_PATH}/process/*.cpp"
     "${CPP_PATH}/score/*.cpp"
     "${CPP_PATH}/view/*.cpp"

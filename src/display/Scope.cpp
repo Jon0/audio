@@ -1,19 +1,13 @@
-/*
- * Scope.cpp
- *
- *  Created on: 3/05/2013
- *      Author: remnanjona
- */
-
 #include <stdlib.h>
 #include <math.h>
 #include <sys/time.h>
 #include <GL/glut.h>
+
 #include "Scope.h"
 
 namespace std {
 
-Scope::Scope(source *buffer, int w, int h) {
+Scope::Scope(device::Source *buffer, int w, int h) {
 	b = buffer;
 	g_values_pre = NULL;
 

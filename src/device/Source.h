@@ -1,17 +1,14 @@
-/*
- * buffer.h
- *
- *  Created on: 2/05/2013
- *      Author: asdf
+#ifndef SOURCE_H_
+#define SOURCE_H_
+
+namespace device {
+
+/**
+ * a stream of audio data
  */
-
-#ifndef BUFFERG_H_
-#define BUFFERG_H_
-namespace std {
-
-class source {
+class Source {
 public:
-	virtual ~source() {};
+	virtual ~Source() {};
 	virtual int getFormat() = 0;
 
 	// available gives how much can be
@@ -30,5 +27,6 @@ public:
 	virtual void setStart() = 0;
 };
 
-} /* namespace std */
-#endif /* BUFFER_H_ */
+} /* namespace device */
+
+#endif

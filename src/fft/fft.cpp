@@ -1,10 +1,3 @@
-/*
- * fft.cpp
- *
- *  Created on: 3/05/2013
- *      Author: remnanjona
- */
-
 #include <stdio.h>
 #include <iostream>
 #include <math.h>
@@ -12,7 +5,7 @@
 
 namespace std {
 
-fft::fft(source *b) {
+fft::fft(device::Source *b) {
 	int length = 1024;
 	double *dat = new double[1024];
 	for (int i = 0; i < length; ++i) {

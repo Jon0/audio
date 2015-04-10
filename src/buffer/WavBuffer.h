@@ -11,11 +11,11 @@
 #include <iostream>
 #include <fstream>
 #include "../io/wav.h"
-#include "../playback/source.h"
+#include "../device/Source.h"
 
 namespace std {
 
-class WavBuffer: public source {
+class WavBuffer: public device::Source {
 protected:
 	RIFF header;
 	FMT format;

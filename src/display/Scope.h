@@ -1,26 +1,22 @@
-/*
- * Scope.h
- *
- *  Created on: 3/05/2013
- *      Author: remnanjona
- */
-
 #ifndef SCOPE_H_
 #define SCOPE_H_
 
 #include "Display.h"
-#include "../playback/source.h"
+#include "../device/Source.h"
 
 namespace std {
 
+/**
+ * visualise audio output using opengl
+ */
 class Scope: public Display {
-	source *b;
+	device::Source *b;
 	short *g_values_pre;
 	float view_scale, format_hz;
 	int width, height;
 
 public:
-	Scope(source *, int, int);
+	Scope(device::Source *, int, int);
 	virtual void init();
 	virtual void draw();
 	virtual ~Scope();

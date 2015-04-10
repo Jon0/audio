@@ -12,11 +12,11 @@
 #include <mutex>
 #include <atomic>
 #include <thread>
-#include "../playback/source.h"
+#include "../device/Source.h"
 
 namespace std {
 
-class BaseBuffer: public source {
+class BaseBuffer: public device::Source {
 
 public:
 	BaseBuffer();

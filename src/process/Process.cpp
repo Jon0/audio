@@ -12,7 +12,7 @@
 
 namespace std {
 
-Process::Process(source *b) {
+Process::Process(device::Source *b) {
 	buf = b;
 
 	// sublength, i, and j

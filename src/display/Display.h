@@ -1,10 +1,3 @@
-/*
- * Display.h
- *
- *  Created on: Mar 11, 2013
- *      Author: remnanjona
- */
-
 #ifndef DISPLAY_H_
 #define DISPLAY_H_
 
