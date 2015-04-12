@@ -12,6 +12,7 @@
 #include "buffer/FunctionBuffer.h"
 #include "buffer/TestBuffer.h"
 #include "score/Note.h"
+#include "score/Structure.h"
 #include "math/Scale.h"
 
 using namespace std;
@@ -43,14 +44,17 @@ short example(long t) {
 int main(int argc, char *argv[]) {
 	srand( time( NULL ) );
 
+	score::Structure s;
+	for (int i = 0; i < 7; ++i) {
+		cout << i << endl;
+		score::Structure next(&s);
+		s = next;
+	}
+
 	bool on = true;
 	bool *oo = &on;
-	function<short(long)> f = [oo](long t) -> short {
-		short r = 0;
-		if (*oo) {
-			r = sin(t / 20.0f) * 500.0;
- 		}
-		return r;
+	function<short(long)> f = [&s](long t) -> short {
+		return s.values[t % s.values.size()] * 1000.0;
 	};
 
 
