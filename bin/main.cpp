@@ -6,14 +6,15 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 
-#include "window/MainWindow.h"
-#include "device/Mixer.h"
-#include "device/Source.h"
-#include "buffer/FunctionBuffer.h"
-#include "buffer/TestBuffer.h"
-#include "score/Note.h"
-#include "score/Structure.h"
-#include "math/Scale.h"
+
+#include <device/Mixer.h>
+#include <device/Source.h>
+#include <buffer/FunctionBuffer.h>
+#include <buffer/TestBuffer.h>
+#include <score/Note.h>
+#include <score/Structure.h>
+#include <math/Grid.h>
+#include <math/Scale.h>
 
 using namespace std;
 
@@ -44,36 +45,25 @@ short example(long t) {
 int main(int argc, char *argv[]) {
 	srand( time( NULL ) );
 
-	score::Structure s;
-	for (int i = 0; i < 7; ++i) {
-		cout << i << endl;
-		score::Structure next(&s);
-		s = next;
-	}
+	// score::Structure s;
+	// for (int i = 0; i < 7; ++i) {
+	// 	cout << i << endl;
+	// 	score::Structure next(&s);
+	// 	s = next;
+	// }
 
-	bool on = true;
-	bool *oo = &on;
-	function<short(long)> f = [&s](long t) -> short {
-		return s.values[t % s.values.size()] * 1000.0;
+	double amplitude = 1000.0;
+	math::Grid g(48);
+
+	function<short(long)> f = [&g, amplitude](long t) -> short {
+		return g.get_sample(t) * amplitude;
 	};
 
-
-	thread t([f]() {	
-		device::Source *b = new FunctionBuffer(f);
-		device::Mixer *mixer = new device::Mixer();
-		mixer->playall(b);
-	});
+	device::Source *b = new FunctionBuffer(f);
+	device::Mixer *mixer = new device::Mixer();
+	mixer->playall(b);
 
 
-	while (true) {
-		string s;
-		getline(cin, s, ' ');
-		cout << "here" << endl;
-		on = !on;
-	}
-
-
-	t.join();
 	return EXIT_SUCCESS;
 }
 

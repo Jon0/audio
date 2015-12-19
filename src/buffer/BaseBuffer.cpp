@@ -5,8 +5,8 @@
  *      Author: remnanjona
  */
 
-#define maxblocks 5
-#define minblocks 1
+#define maxblocks 15
+#define minblocks 5
 
 #include <chrono>
 #include <iostream>
@@ -16,7 +16,7 @@
 namespace std {
 
 BaseBuffer::BaseBuffer(): m_stop(true), m_thread(), data() {
-	blocksize = 512; //1024*32;
+	blocksize = 1024*32;
 	m_size = 0;
 	current = NULL;
 	current_start = 0;
