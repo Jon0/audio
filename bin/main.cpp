@@ -1,20 +1,19 @@
 
 #include <cmath>
+#include <cstdlib>
 #include <iostream>
 #include <thread>
-
-#include <stdlib.h>
-#include <GL/glut.h>
-
 
 #include <device/Mixer.h>
 #include <device/Source.h>
 #include <buffer/FunctionBuffer.h>
 #include <buffer/TestBuffer.h>
+#include <renderer/Renderer.h>
 #include <score/Note.h>
 #include <score/Structure.h>
 #include <math/Grid.h>
 #include <math/Scale.h>
+#include <window/Window.h>
 
 using namespace std;
 
@@ -42,7 +41,7 @@ short example(long t) {
 	return (s1 & 0xff) * 200;
 }
 
-int main(int argc, char *argv[]) {
+void test() {
 	srand( time( NULL ) );
 
 	// score::Structure s;
@@ -62,9 +61,16 @@ int main(int argc, char *argv[]) {
 	device::Source *b = new FunctionBuffer(f);
 	device::Mixer *mixer = new device::Mixer();
 	mixer->playall(b);
+}
 
-
-	return EXIT_SUCCESS;
+int main(int argc, char *argv[]) {
+	window::Context c;
+	window::Window w(c);
+	w.enable_rendering();
+	renderer::Renderer r;
+	r.update();
+	c.process_events();
+	return 0;
 }
 
 

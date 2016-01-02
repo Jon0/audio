@@ -1,3 +1,4 @@
+#include <iostream>
 #include <cstdlib>
 #include <cmath>
 
@@ -14,7 +15,8 @@ Grid::Grid(int size)
 	inc.resize(size);
 	amp.resize(size);
 
-	std::vector<int> tones = {10, 4, 6, 3, 5, 9, 2, 1, 7, 8, 11, 0};
+	//std::vector<int> tones = {10, 4, 6, 3, 5, 9, 2, 1, 7, 8, 11, 0};
+	std::vector<int> tones = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11};
 
 	double start_freq = 40.0;
 	for (int i = 0; i < size; ++i) {
@@ -37,7 +39,12 @@ double Grid::get_sample(long t) {
 	double result = 0.0;
 	for (int i = 0; i < size; ++i) {
 		amp[i] *= 0.999;
-		if (gs.is_on(i, modtime, 73231 + block)) {
+
+		// a wrapping effect
+		int tone_map = (i + modtime) % size;
+		int block_map = 73231 + block * 7;
+
+		if (gs.is_on(tone_map, modtime, block_map)) {
 			amp[i] += 0.0015;
 		}
 		if (amp[i] > 1) {
@@ -53,7 +60,7 @@ double Grid::get_sample(long t) {
 GridSeries::GridSeries(int size)
 	:
 	size(size),
-	maxprime(1) {
+	maxprime(2) {
 
 	int ivalue = 0;
 	int halfsize = size / 2;
@@ -102,12 +109,13 @@ bool GridSeries::is_prime(int i) {
 		for (int p = maxprime; p < i; ++p) {
 			int rt = std::sqrt(i);
 			bool addprime = true;
-			for (int t = 2; t < rt; ++t) {
+			for (int t = 2; t <= rt; ++t) {
 				if (prime.count(t) > 0 && p % t == 0) {
 					addprime = false;
 				}
 			}
 			if (addprime) {
+				std::cout << "prime " << p << "\n";
 				prime.insert(p);
 			}
 		}
